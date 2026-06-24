@@ -1,0 +1,112 @@
+/* SwarmShield AI — design tokens for Tailwind v4
+ * Paste into src/app/globals.css (replacing the placeholder :root/@theme block).
+ * Dark is the DEFAULT theme. Utilities generated: bg-bg-base, text-sev-critical,
+ * border-border-subtle, ring-brand-glow, text-contradiction, etc.
+ */
+@import "tailwindcss";
+
+:root {
+  /* Canvas & surfaces */
+  --bg-base: #070b11;
+  --bg-surface-1: #0b1119;
+  --bg-surface-2: #0f1722;
+  --bg-surface-3: #141e2b;
+  --border-subtle: #1c2836;
+  --border-strong: #2a3a4d;
+
+  /* Text */
+  --text-primary: #e6edf5;
+  --text-secondary: #9fb0c3;
+  --text-muted: #5e7387;
+
+  /* Brand — shield cyan */
+  --brand-400: #5eead4;
+  --brand-500: #2dd4bf;
+  --brand-600: #14b8a6;
+  --brand-glow: rgba(45, 212, 191, 0.25);
+
+  /* Severity / risk scale */
+  --sev-critical: #ff3b5c;
+  --sev-high: #ff8a3d;
+  --sev-medium: #ffc53d;
+  --sev-low: #3dd68c;
+  --sev-info: #4da3ff;
+
+  /* Investigation semantics */
+  --agent-live: #2dd4bf;
+  --contradiction: #c264ff;
+  --evidence: #4da3ff;
+  --manipulation: #ff8a3d;
+
+  /* Data-viz categorical */
+  --viz-1: #2dd4bf;
+  --viz-2: #4da3ff;
+  --viz-3: #c264ff;
+  --viz-4: #ffc53d;
+  --viz-5: #ff8a3d;
+  --viz-6: #ff3b5c;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface-1: var(--bg-surface-1);
+  --color-bg-surface-2: var(--bg-surface-2);
+  --color-bg-surface-3: var(--bg-surface-3);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+
+  --color-sev-critical: var(--sev-critical);
+  --color-sev-high: var(--sev-high);
+  --color-sev-medium: var(--sev-medium);
+  --color-sev-low: var(--sev-low);
+  --color-sev-info: var(--sev-info);
+
+  --color-agent-live: var(--agent-live);
+  --color-contradiction: var(--contradiction);
+  --color-evidence: var(--evidence);
+  --color-manipulation: var(--manipulation);
+
+  --color-viz-1: var(--viz-1);
+  --color-viz-2: var(--viz-2);
+  --color-viz-3: var(--viz-3);
+  --color-viz-4: var(--viz-4);
+  --color-viz-5: var(--viz-5);
+  --color-viz-6: var(--viz-6);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Live pulse used by agent / critical indicators */
+@keyframes ss-pulse {
+  0% { box-shadow: 0 0 0 0 var(--brand-glow); }
+  70% { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0); }
+}
+.ss-live-dot { animation: ss-pulse 2s var(--ease-in-out) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-live-dot { animation: none; }
+}

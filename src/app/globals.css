@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* ============================================================
+   QALQAN — design tokens (Attio-inspired, light & minimal)
+   ============================================================ */
+:root {
+  /* Canvas & surfaces */
+  --bg-base: #fafafb;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #f7f8f9;
+  --bg-surface-3: #f1f2f4;
+  --border-subtle: #eeeff1;
+  --border-strong: #e4e7ec;
+  --ink: #1c1d1f;
+
+  /* Text */
+  --text-primary: #232529;
+  --text-secondary: #5c5e63;
+  --text-muted: #9fa1a7;
+
+  /* Accent — QALQAN blue */
+  --brand-400: #5c93f7;
+  --brand-500: #266df0;
+  --brand-600: #1b57cf;
+  --brand-glow: rgba(38, 109, 240, 0.18);
+
+  /* Severity / risk scale (saturated dot + text) */
+  --sev-critical: #d92d20;
+  --sev-high: #e8590c;
+  --sev-medium: #ca8a04;
+  --sev-low: #067647;
+  --sev-info: #266df0;
+
+  /* Investigation semantics */
+  --agent-live: #16a34a;
+  --contradiction: #7f56d9;
+  --evidence: #266df0;
+  --manipulation: #e8590c;
+
+  /* Data-viz categorical */
+  --viz-1: #266df0;
+  --viz-2: #16a34a;
+  --viz-3: #7f56d9;
+  --viz-4: #ca8a04;
+  --viz-5: #e8590c;
+  --viz-6: #d92d20;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface-1: var(--bg-surface-1);
+  --color-bg-surface-2: var(--bg-surface-2);
+  --color-bg-surface-3: var(--bg-surface-3);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-glow: var(--brand-glow);
+
+  --color-sev-critical: var(--sev-critical);
+  --color-sev-high: var(--sev-high);
+  --color-sev-medium: var(--sev-medium);
+  --color-sev-low: var(--sev-low);
+  --color-sev-info: var(--sev-info);
+
+  --color-agent-live: var(--agent-live);
+  --color-contradiction: var(--contradiction);
+  --color-evidence: var(--evidence);
+  --color-manipulation: var(--manipulation);
+
+  --color-viz-1: var(--viz-1);
+  --color-viz-2: var(--viz-2);
+  --color-viz-3: var(--viz-3);
+  --color-viz-4: var(--viz-4);
+  --color-viz-5: var(--viz-5);
+  --color-viz-6: var(--viz-6);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-newsreader);
+  --font-mono: var(--font-jetbrains);
+}
+
+* {
+  border-color: var(--border-subtle);
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Soft, light scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcdee2;
+  border: 3px solid var(--bg-base);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c7cad0;
+}
+
+/* Attio-style soft card shadow */
+.qk-card {
+  box-shadow:
+    0 1px 2px 0 rgba(28, 40, 64, 0.04),
+    0 2px 6px 0 rgba(28, 40, 64, 0.04);
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes ss-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.35); }
+  70% { box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+@keyframes ss-pulse-crit {
+  0% { box-shadow: 0 0 0 0 rgba(217, 45, 32, 0.35); }
+  70% { box-shadow: 0 0 0 6px rgba(217, 45, 32, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(217, 45, 32, 0); }
+}
+@keyframes ss-blink {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+@keyframes ss-flash {
+  0% { background-color: rgba(127, 86, 217, 0.18); }
+  100% { background-color: transparent; }
+}
+@keyframes ss-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ss-live-dot { animation: ss-pulse 2s var(--ease-in-out) infinite; }
+.ss-live-dot-crit { animation: ss-pulse-crit 1.6s var(--ease-in-out) infinite; }
+.ss-typing span { animation: ss-blink 1.2s var(--ease-in-out) infinite; }
+.ss-typing span:nth-child(2) { animation-delay: 0.2s; }
+.ss-typing span:nth-child(3) { animation-delay: 0.4s; }
+.ss-flash { animation: ss-flash 0.9s var(--ease-out); }
+.ss-fade-in { animation: ss-fade-in var(--dur-base) var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-live-dot, .ss-live-dot-crit, .ss-typing span, .ss-flash, .ss-fade-in {
+    animation: none !important;
+  }
+}
