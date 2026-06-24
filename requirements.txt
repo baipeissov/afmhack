@@ -1,0 +1,38 @@
+# --- core ---
+numpy<2
+pandas
+scikit-learn==1.6.1  # запинено: версия, на которой обучен models/weights/text_classifier.joblib
+joblib
+matplotlib
+tqdm
+
+# --- text classifier (Component A) ---
+sentence-transformers
+torch --extra-index-url https://download.pytorch.org/whl/cpu
+
+# --- dataset builder ---
+datasets
+huggingface_hub
+
+# --- collector (automated discovery, no manual upload) ---
+yt-dlp
+
+# --- pipeline: audio ---
+faster-whisper
+ffmpeg-python
+
+# --- pipeline: ocr ---
+paddleocr
+paddlepaddle
+
+# --- pipeline: visual ---
+open_clip_torch
+pillow
+
+# --- api ---
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+# --- frontend (served as static files by FastAPI, no separate build needed) ---

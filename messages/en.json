@@ -1,0 +1,226 @@
+{
+  "nav": {
+    "command": "Command",
+    "detections": "Detections",
+    "investigations": "Investigations",
+    "entities": "Entities",
+    "graph": "Graph",
+    "analytics": "Analytics",
+    "agents": "Agents",
+    "vault": "Vault",
+    "reports": "Reports",
+    "admin": "Admin",
+    "newCase": "New case",
+    "systemNominal": "system nominal"
+  },
+  "topbar": {
+    "searchPlaceholder": "Search cases, entities, wallets…",
+    "agentsActive": "agents active"
+  },
+  "statusStrip": {
+    "ingest": "ingest",
+    "healthy": "healthy",
+    "models": "models",
+    "nominal": "nominal",
+    "itemsPerHour": "{count} items/h",
+    "region": "region {region}"
+  },
+  "howItWorks": {
+    "heading": "How SwarmShield works",
+    "detect": {
+      "title": "1 · Detect",
+      "text": "AI scans TikTok & Instagram videos for scam, casino & pyramid signals."
+    },
+    "investigate": {
+      "title": "2 · Investigate",
+      "text": "Suspicious accounts become cases. A swarm of AI agents is deployed."
+    },
+    "crossExamine": {
+      "title": "3 · Cross-examine",
+      "text": "Agents pose as different investors and question the suspect at once."
+    },
+    "verdict": {
+      "title": "4 · Verdict",
+      "text": "Conflicting answers expose the lie. The system writes the evidence report."
+    }
+  },
+  "emptyState": {
+    "settings": {
+      "title": "Settings & admin",
+      "hint": "Sources, model routing, RBAC and the immutable audit log."
+    },
+    "evidence": {
+      "title": "Evidence vault",
+      "hint": "Hashed artifacts with full chain-of-custody — clips, transcripts, messages and wallets across all cases."
+    },
+    "agents": {
+      "title": "Agent fleet",
+      "hint": "Configure agent personas, objectives and model routing. Live swarm activity is shown inside each investigation's War Room."
+    },
+    "entities": {
+      "title": "Entity registry",
+      "hint": "Accounts, channels, wallets and devices surfaced across investigations. Open a case graph to inspect linked entities."
+    },
+    "reports": {
+      "title": "Reports & exports",
+      "hint": "Generated prosecutor dossiers ready for FIU handoff, platform takedown requests and downstream systems."
+    }
+  },
+  "investigationsList": {
+    "title": "Investigations",
+    "lead": "Each case is a suspicious account under active investigation by a swarm of AI agents. Open one to watch the interrogation and read the evidence.",
+    "columns": {
+      "risk": "Risk",
+      "case": "Case",
+      "target": "Target",
+      "scheme": "Scheme",
+      "confidence": "Confidence",
+      "agents": "Agents",
+      "lies": "Lies",
+      "age": "Age"
+    }
+  },
+  "detections": {
+    "title": "Suspicious videos",
+    "lead": "Our AI watches social media and flags videos that look like scams, illegal casinos or pyramid schemes. Review one and promote it to a full investigation.",
+    "ago": "ago",
+    "signals": "signals",
+    "vision": "vision",
+    "dismiss": "Dismiss",
+    "promote": "Promote"
+  },
+  "command": {
+    "title": "Command Center",
+    "lead": "SwarmShield automatically finds fraudulent videos on social media and runs AI investigations against them. Here's everything happening across your organization right now.",
+    "threatLevel": "Threat level: Elevated",
+    "riskInflowTitle": "Risk inflow · last 72h",
+    "riskInflowSub": "stacked by severity",
+    "schemeMixTitle": "Scheme mix",
+    "needsDecisionTitle": "Needs your decision",
+    "needsDecisionSub": "highest risk first",
+    "agentsCount": "agents",
+    "agentsTalkingNow": "Agents talking now",
+    "recentAlerts": "Recent alerts"
+  },
+  "caseOverview": {
+    "caseSummary": "Case summary",
+    "confidence": "Confidence",
+    "agentsComplete": "agents complete",
+    "scheme": "Scheme",
+    "schemePyramid": "Financial pyramid (Ponzi)",
+    "leadTheory": "Lead theory",
+    "agentProgress": "Agent progress",
+    "statusDone": "done",
+    "statusLive": "live",
+    "msgs": "msgs",
+    "keyFindings": "Key findings · auto-surfaced",
+    "target": "Target",
+    "joined": "joined 4mo ago",
+    "linkedEntities": "{count} linked entities",
+    "riskFactors": "Risk factors",
+    "contradictionsDetected": "{count} contradictions detected",
+    "nextBestAction": "Next best action · AI",
+    "actionDeployAgents": "Deploy 2 more agents on payout-mechanics angle",
+    "actionPullWallet": "Pull wallet 0x4a3f…e1 transaction history",
+    "deployAgentsButton": "Deploy agents",
+    "reportButton": "Report"
+  },
+  "contradictions": {
+    "heading": "Where the story falls apart",
+    "liesCaught": "{count} lies caught",
+    "shownBelow": "{count} shown below",
+    "lead1": "Each row is a question. Each column is an agent. When the suspect gave different agents conflicting answers, those cells turn",
+    "purple": "purple",
+    "lead2": "— that's a caught lie. Click a row to see the proof.",
+    "topic": "Topic",
+    "selectedContradiction": "Selected contradiction",
+    "confidence": "confidence",
+    "playClip": "play clip · source msg",
+    "manipulationTechnique": "Manipulation technique",
+    "addToReport": "Add to report"
+  },
+  "graph": {
+    "heading": "The network behind the account",
+    "lead": "Every person, wallet and device linked to the suspect. Click any node for details.",
+    "networkView": "Network view",
+    "mapView": "Map view"
+  },
+  "warRoom": {
+    "explainerBold": "Three AI agents are questioning this account at the same time",
+    "explainer1": "— each pretends to be a different kind of investor. SwarmShield compares their answers live and",
+    "explainer2": "flags the moment the suspect contradicts itself.",
+    "resume": "Resume",
+    "pause": "Pause",
+    "replayDemo": "Replay demo",
+    "agentLabel": "Agent",
+    "suspectLabel": "Suspect",
+    "manipulationLabel": "Manipulation",
+    "makingContact": "Agent is making contact…",
+    "liesCaught": "Lies caught",
+    "liesCaughtHint": "When two agents get different answers to the same question, that's a contradiction — strong proof of fraud.",
+    "noLiesYet": "No lies caught yet.",
+    "stillGathering": "Agents are still gathering answers…",
+    "lieNumber": "Lie #{n}",
+    "caughtBecause": "Caught because the {agent} agent was told the opposite.",
+    "interrogationComplete": "Interrogation complete. Enough evidence to write the report.",
+    "toastTitle": "Contradiction caught — the suspect just lied",
+    "toastDescription": "On \"{topic}\", different agents got opposite answers.",
+    "agentMeta": {
+      "a_03": { "name": "The Skeptic", "role": "Pushes back, asks who guarantees the returns" },
+      "a_07": { "name": "The Eager Newbie", "role": "Plays naive to learn how payouts really work" },
+      "a_11": { "name": "The Due-Diligence", "role": "Asks for licences and legal proof" }
+    }
+  },
+  "report": {
+    "contents": "Contents",
+    "toc": {
+      "verdict": "Verdict",
+      "summary": "Summary",
+      "evidence": "Evidence",
+      "techniques": "Techniques",
+      "network": "Network",
+      "timeline": "Timeline",
+      "appendix": "Appendix"
+    },
+    "evidence": "Evidence",
+    "headerTitle": "AI Prosecutor Report",
+    "pdf": "PDF",
+    "json": "JSON",
+    "share": "Share",
+    "sign": "Sign",
+    "confidence": "confidence",
+    "target": "Target",
+    "agentSwarm": "{count}-agent swarm",
+    "contradictionsCount": "{count} contradictions",
+    "recommendation": "Recommendation",
+    "executiveSummary": "Executive summary",
+    "countsFindings": "Counts / findings",
+    "count": "Count {n}",
+    "conf": "conf",
+    "exhibits": "Exhibits",
+    "chainOfCustody": "Chain of custody",
+    "artifactsHashed": "{count} artifacts hashed",
+    "modelVersion": "model v0.9.2",
+    "signOffPending": "analyst sign-off pending"
+  },
+  "caseHeader": {
+    "objective": "Objective",
+    "report": "Report",
+    "live": "LIVE",
+    "critical": "CRITICAL"
+  },
+  "caseTabs": {
+    "overview": "Overview",
+    "warRoom": "War Room",
+    "contradictions": "Contradictions",
+    "graph": "Graph",
+    "timeline": "Timeline",
+    "report": "Report"
+  },
+  "verdictMeter": {
+    "fraudConfidence": "Fraud confidence",
+    "fraudConfirmed": "FRAUD CONFIRMED",
+    "strongEvidence": "Strong evidence",
+    "gatheringEvidence": "Gathering evidence"
+  }
+}

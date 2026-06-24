@@ -1,7 +1,9 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 /** Big, legible "fraud confidence" bar that climbs as evidence accumulates. */
 export function VerdictMeter({ value }: { value: number }) {
+  const t = useTranslations("verdictMeter");
   const pct = Math.round(value * 100);
   const confirmed = value >= 0.9;
   const color = confirmed
@@ -10,16 +12,16 @@ export function VerdictMeter({ value }: { value: number }) {
       ? "var(--sev-high)"
       : "var(--sev-medium)";
   const label = confirmed
-    ? "FRAUD CONFIRMED"
+    ? t("fraudConfirmed")
     : value >= 0.7
-      ? "Strong evidence"
-      : "Gathering evidence";
+      ? t("strongEvidence")
+      : t("gatheringEvidence");
 
   return (
     <div className="rounded-lg border border-border-subtle bg-bg-surface-1 px-4 py-3">
       <div className="flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-text-muted">
-          Fraud confidence
+          {t("fraudConfidence")}
         </span>
         <span
           className={cn("text-xs font-semibold uppercase tracking-wide")}

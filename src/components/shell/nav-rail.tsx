@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import {
   LayoutGrid,
   Radar,
@@ -20,19 +21,20 @@ import { cn } from "@/lib/utils";
 import { LivePulseDot } from "@/components/feedback/live-pulse-dot";
 
 const NAV = [
-  { href: "/command", label: "Command", icon: LayoutGrid },
-  { href: "/detections", label: "Detections", icon: Radar },
-  { href: "/investigations", label: "Investigations", icon: Crosshair },
-  { href: "/entities", label: "Entities", icon: Hexagon },
-  { href: "/investigations/CASE-2041/graph", label: "Graph", icon: Share2 },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/agents", label: "Agents", icon: Bot },
-  { href: "/evidence", label: "Vault", icon: Database },
-  { href: "/reports", label: "Reports", icon: FileText },
-  { href: "/settings", label: "Admin", icon: Settings },
-];
+  { href: "/command", key: "command", icon: LayoutGrid },
+  { href: "/detections", key: "detections", icon: Radar },
+  { href: "/investigations", key: "investigations", icon: Crosshair },
+  { href: "/entities", key: "entities", icon: Hexagon },
+  { href: "/investigations/CASE-2041/graph", key: "graph", icon: Share2 },
+  { href: "/analytics", key: "analytics", icon: BarChart3 },
+  { href: "/agents", key: "agents", icon: Bot },
+  { href: "/evidence", key: "vault", icon: Database },
+  { href: "/reports", key: "reports", icon: FileText },
+  { href: "/settings", key: "admin", icon: Settings },
+] as const;
 
 export function NavRail() {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   return (
     <nav className="flex h-full w-56 shrink-0 flex-col border-r border-border-subtle bg-bg-surface-1">
@@ -67,7 +69,7 @@ export function NavRail() {
                 <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-brand-500" />
               )}
               <Icon className="size-4 shrink-0" />
-              {item.label}
+              {t(item.key)}
             </Link>
           );
         })}
@@ -78,10 +80,10 @@ export function NavRail() {
           href="/investigations"
           className="flex items-center justify-center gap-2 rounded-md bg-brand-500 px-3 py-2 text-[13px] font-semibold text-bg-base transition-colors hover:bg-brand-400"
         >
-          <Plus className="size-4" /> New case
+          <Plus className="size-4" /> {t("newCase")}
         </Link>
         <div className="mt-3 flex items-center gap-2 px-1 text-[11px] text-text-muted">
-          <LivePulseDot /> system nominal
+          <LivePulseDot /> {t("systemNominal")}
         </div>
       </div>
     </nav>
