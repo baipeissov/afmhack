@@ -1,0 +1,10 @@
+# собранные доказательства и журнал аудита — не коммитим (содержат данные проверок)
+evidence/
+audit_log.jsonl
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
