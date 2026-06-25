@@ -134,7 +134,7 @@ const DEMO_LINKS = [
 
 const endId = (e) => (typeof e === "object" && e !== null ? e.id : e);
 const keyOf = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
-const nodeRadius = (n) => Math.max(6, Math.sqrt(n.followers) / 10);
+const nodeRadius = (n) => Math.max(6, Math.sqrt(n.followers ?? 0) / 10);
 
 function buildAdjacency(nodes, links) {
   const adj = {};
@@ -795,7 +795,7 @@ export default function NetworkGraph({
                     <span className="inline-block h-2 w-2 rounded-full" style={{ background: selected.platform === "tiktok" ? "#111315" : "#C13584" }} />
                     {selected.platform === "tiktok" ? "TikTok" : "Instagram"}
                     <span className="text-border-strong">·</span>
-                    {selected.followers.toLocaleString("ru-RU")} подписчиков
+                    {selected.followers != null ? `${selected.followers.toLocaleString("ru-RU")} подписчиков` : "подписчики неизвестны"}
                   </div>
                 </div>
                 <button onClick={() => setSelected(null)} className="shrink-0 rounded-md p-1 text-text-muted hover:bg-bg-surface-2 hover:text-text-primary" aria-label="Закрыть">✕</button>
@@ -857,11 +857,15 @@ export default function NetworkGraph({
               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
                 <div>
                   <div className="text-text-muted">Создан</div>
-                  <div className="mt-0.5 font-mono text-text-primary">{new Date(selected.created_at).toLocaleDateString("ru-RU")}</div>
+                  <div className="mt-0.5 font-mono text-text-primary">
+                    {selected.created_at ? new Date(selected.created_at).toLocaleDateString("ru-RU") : "н/д"}
+                  </div>
                 </div>
                 <div>
                   <div className="text-text-muted">Подписчики</div>
-                  <div className="mt-0.5 font-mono text-text-primary">{selected.followers.toLocaleString("ru-RU")}</div>
+                  <div className="mt-0.5 font-mono text-text-primary">
+                    {selected.followers != null ? selected.followers.toLocaleString("ru-RU") : "н/д"}
+                  </div>
                 </div>
               </div>
 

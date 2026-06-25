@@ -40,6 +40,11 @@ def main():
         print(line)
     if not dossier["explanations"]:
         print("(явных маркеров не найдено)")
+    if dossier.get("llm_explanations"):
+        print()
+        print("Объяснение AI (Llama 3.2 3B по таймкодам):")
+        for e in dossier["llm_explanations"]:
+            print(f"   [{e['timecode']}] {e['llm_explanation']}")
     print()
     print(f"→ Рекомендация: {dossier['recommendation']}")
     print()

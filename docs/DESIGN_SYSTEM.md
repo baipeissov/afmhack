@@ -1,4 +1,4 @@
-# SwarmShield AI — Design System & Product Specification
+# Qalqan AI — Design System & Product Specification
 
 > **Product class:** Autonomous AI Investigation Platform (financial intelligence / cyber).
 > **Not** a content-moderation tool. **Not** a generic SaaS admin panel.
@@ -20,7 +20,7 @@ An investigation platform sells **trust in a verdict**. The UI's job is to make 
 ## 1. Information Architecture
 
 ```
-SwarmShield AI
+Qalqan AI
 │
 ├── 01  Command Center (Dashboard)          /                      global situational awareness
 ├── 02  Detection Feed                       /detections            inbound suspicious media stream
@@ -126,7 +126,7 @@ The IA is **case-centric**, like Gotham. Everything ladders up to an *Investigat
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────┐
-│ [◣ SWARMSHIELD]   Command Center  Detections  Investigations  Entities  Analytics  ⌘K │  ← top bar
+│ [◣ QALQAN]   Command Center  Detections  Investigations  Entities  Analytics  ⌘K │  ← top bar
 │                                                          ◷ live   ⬤ 14 agents active  ⚙ │
 ├──────────┬─────────────────────────────────────────────────────────────────┬─────────┤
 │          │  THREAT POSTURE                              ELEVATED ▲           │ LIVE OPS│
@@ -437,7 +437,7 @@ Mobile is **monitoring & decision**, not full investigation. Operators triage an
 
 ```
 ┌───────────────────────┐   ┌───────────────────────┐
-│ ◣ SwarmShield   ⌘  ⚙  │   │ ◂ CASE-2041   ●CRIT    │
+│ ◣ Qalqan   ⌘  ⚙  │   │ ◂ CASE-2041   ●CRIT    │
 │ ───────────────────── │   │ @lux.invest  0.94 ▲    │
 │ THREAT  ELEVATED ▲    │   │ ───────────────────── │
 │ ┌────────┬──────────┐ │   │ [Sum][War][Graph][Rep]│  ← swipeable tabs

@@ -53,7 +53,7 @@ def process_item(item) -> dict:
             "queued_at": datetime.now(timezone.utc).isoformat(),
         }
 
-    dossier = build_dossier(item.local_path)
+    dossier = build_dossier(item.local_path, caption=item.caption)
     raw = dossier["raw"]
     return {
         "item_id": item.item_id,
@@ -68,6 +68,7 @@ def process_item(item) -> dict:
         "contributions": dossier["contributions"],
         "explanations": dossier["explanations"],
         "recommendation": dossier["recommendation"],
+        "entities": dossier.get("entities", {}),
         "modalities": {
             "asr": len(raw["transcript"]) > 0,
             "ocr": len(raw["ocr"]) > 0,

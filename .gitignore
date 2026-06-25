@@ -25,6 +25,7 @@ frame_cache/
 
 # next.js
 .next/
+.next-*/
 
 # secrets / env (NEVER commit — contains OPENROUTER_API_KEY etc.)
 .env
@@ -47,3 +48,4 @@ evidence/
 .vscode/
 .claude/
 node_modules
+.playwright-mcp/

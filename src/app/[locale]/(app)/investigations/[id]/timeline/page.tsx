@@ -32,7 +32,7 @@ export default async function TimelinePage({
           What happened, step by step
         </h2>
         <p className="mt-1 max-w-2xl text-sm text-text-secondary">
-          SwarmShield reconstructs the whole case as a timeline — from the first
+          Qalqan reconstructs the whole case as a timeline — from the first
           flagged video to every lie and piece of evidence the agents uncovered.
         </p>
       </div>

@@ -83,3 +83,64 @@ export async function analyzeVideo(formData: FormData): Promise<QueueRecord> {
   if (!res.ok) throw new Error(`analyze failed: ${res.status}`);
   return res.json();
 }
+
+export interface AnalyzeUrlInput {
+  url: string;
+  accountAgeDays?: number;
+  followerGrowth?: number;
+  referralLinkInBio?: boolean;
+}
+
+/** Аналитик вставляет только ссылку — caption/@handle вытягиваются сами
+ * через yt-dlp на бэкенде (см. pipeline/url_fetch.py, POST /analyze/url). */
+export async function analyzeUrl(input: AnalyzeUrlInput): Promise<QueueRecord & { error?: string; detail?: string }> {
+  const res = await fetch(`${API_URL}/analyze/url`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url: input.url,
+      account_age_days: input.accountAgeDays ?? null,
+      follower_growth: input.followerGrowth ?? null,
+      referral_link_in_bio: input.referralLinkInBio ?? false,
+    }),
+  });
+  if (!res.ok) throw new Error(`analyze/url failed: ${res.status}`);
+  return res.json();
+}
+
+export interface NetworkNode {
+  id: string;
+  platform: "tiktok" | "instagram";
+  risk_score: number;
+  violation_class: string;
+  // followers/created_at/telegram не приходят с реального backend'а
+  // (TikTok/Instagram не отдают их анонимно — см. pipeline/network_builder.py).
+  followers?: number;
+  created_at?: string;
+  telegram?: string;
+}
+
+export interface NetworkLink {
+  source: string;
+  target: string;
+  link_type: "shared_telegram" | "shared_referral_link" | "shared_hashtag" | "shared_phone";
+  strength: number;
+}
+
+export interface NetworkGraphData {
+  nodes: NetworkNode[];
+  links: NetworkLink[];
+}
+
+// Граф из реальных видео в очереди (см. pipeline/network_builder.py) —
+// узлов/рёбер мало, пока очередь не наполнена; страница /network сама
+// решает, когда показать это вместо демо-данных.
+export async function fetchNetwork(): Promise<NetworkGraphData | null> {
+  try {
+    const res = await fetch(`${API_URL}/network`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}

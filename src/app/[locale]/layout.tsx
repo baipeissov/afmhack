@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SwarmShield AI — Investigation Platform",
+  title: "Qalqan AI — Investigation Platform",
   description:
     "Autonomous multi-agent fraud investigation platform for social media.",
 };
