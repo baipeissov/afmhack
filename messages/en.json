@@ -6,6 +6,8 @@
     "entities": "Entities",
     "graph": "Graph",
     "network": "Network",
+    "engagement": "Investigator",
+    "liaison": "AFM Liaison",
     "analytics": "Analytics",
     "agents": "Agents",
     "vault": "Vault",
