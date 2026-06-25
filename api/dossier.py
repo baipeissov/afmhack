@@ -11,7 +11,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from data.label_schema import LABELS_RU  # noqa: E402
 from models import fusion_predict, predict_text  # noqa: E402
-from pipeline import audio, metadata, ocr, visual  # noqa: E402
+from pipeline import audio, entity_extractor, metadata, ocr, visual  # noqa: E402
+
+try:
+    from pipeline.kaspi_normalizer import find_kaspi_numbers
+except ImportError:  # модуль ещё не готов/не подключён — сеть просто без телефонов
+    find_kaspi_numbers = None
 
 FRAUD_CLASS_NAMES = [LABELS_RU[i] for i in fusion_predict.FRAUD_CLASS_IDS]
 RISK_LEVELS = [(0.7, "HIGH"), (0.4, "MEDIUM"), (0.0, "LOW")]
@@ -51,7 +56,7 @@ def _aggregate_text_class_probs(rows: list[dict], text_key: str) -> tuple[dict, 
     return agg, evidence
 
 
-def build_dossier(video_path: str, account_metadata: dict | None = None) -> dict:
+def build_dossier(video_path: str, account_metadata: dict | None = None, caption: str | None = None) -> dict:
     transcript = audio.transcribe(video_path)
     ocr_rows = ocr.extract_overlay_text(video_path)
     visual_rows = visual.score_frames(video_path)
@@ -59,6 +64,14 @@ def build_dossier(video_path: str, account_metadata: dict | None = None) -> dict
 
     transcript_probs, transcript_evidence = _aggregate_text_class_probs(transcript, "text")
     ocr_probs, ocr_evidence = _aggregate_text_class_probs(ocr_rows, "text")
+
+    all_text = [r["text"] for r in transcript] + [r["text"] for r in ocr_rows] + ([caption] if caption else [])
+    entities = entity_extractor.extract_entities(all_text)
+    if find_kaspi_numbers:
+        phones: set[str] = set()
+        for text in all_text:
+            phones.update(find_kaspi_numbers(text))
+        entities["phones"] = sorted(phones)
 
     visual_scores_max = {}
     visual_evidence = []
@@ -117,6 +130,7 @@ def build_dossier(video_path: str, account_metadata: dict | None = None) -> dict
         "contributions": risk["contributions"],
         "explanations": explanations,
         "recommendation": recommendation,
+        "entities": entities,
         "raw": {
             "transcript": transcript,
             "ocr": ocr_rows,

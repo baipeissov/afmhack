@@ -24,6 +24,7 @@ from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from api.dossier import build_dossier  # noqa: E402
+from pipeline.network_builder import build_network  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE_PATH = ROOT / "data" / "risk_queue.jsonl"
@@ -90,6 +91,7 @@ def _dossier_to_queue_record(dossier: dict, item_id: str, source: str, account_h
         "contributions": dossier["contributions"],
         "explanations": dossier["explanations"],
         "recommendation": dossier["recommendation"],
+        "entities": dossier.get("entities", {}),
         "modalities": {
             "asr": len(raw["transcript"]) > 0,
             "ocr": len(raw["ocr"]) > 0,
@@ -127,6 +129,14 @@ def get_queue_item(item_id: str):
     return {"error": "not_found"}
 
 
+@app.get("/network")
+def get_network():
+    """Граф связей аккаунтов по общим сигналам (Telegram-канал, реф-ссылка,
+    хэштег, номер Kaspi), извлечённым из видео в очереди — см.
+    pipeline/entity_extractor.py + pipeline/network_builder.py."""
+    return build_network(_read_queue())
+
+
 @app.post("/queue/decision")
 def record_decision(decision: DecisionIn):
     """Human-in-the-loop: аналитик подтверждает/отклоняет кейс. Это
@@ -153,6 +163,7 @@ async def analyze(
     account_age_days: float = Form(365),
     follower_growth: float = Form(0.0),
     referral_link_in_bio: bool = Form(False),
+    caption: str | None = Form(None),
 ):
     """Загрузка файла из дашборда (или curl) -> полный анализ -> результат
     сразу попадает в /queue, чтобы дашборд показал его в списке без
@@ -167,7 +178,7 @@ async def analyze(
         "follower_growth": follower_growth,
         "referral_link_in_bio": referral_link_in_bio,
     }
-    dossier = build_dossier(str(dest), account_metadata)
+    dossier = build_dossier(str(dest), account_metadata, caption=caption)
 
     item_id = f"manual_{uuid.uuid4().hex[:8]}"
     record = _dossier_to_queue_record(dossier, item_id, source="manual_upload", account_handle=account_handle, platform=platform)
@@ -181,4 +192,4 @@ async def analyze(
 
 @app.get("/")
 def root():
-    return {"service": "AI Media Watch", "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze"]}
+    return {"service": "AI Media Watch", "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze", "/network"]}
