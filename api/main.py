@@ -24,7 +24,7 @@ from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from api.dossier import build_dossier  # noqa: E402
-from pipeline import live_stream  # noqa: E402
+from pipeline import live_stream, url_fetch  # noqa: E402
 from pipeline.network_builder import build_network  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,11 +35,16 @@ INCOMING_DIR = ROOT / "data" / "incoming"
 
 app = FastAPI(title="AI Media Watch")
 
-# Next.js dev server (localhost:3000) дёргает этот API из браузера (для
-# /analyze и /queue/decision) — без CORS браузер такие запросы заблокирует.
+# Next.js dev server дёргает этот API из браузера (для /analyze,
+# /queue/decision, /network) — без CORS браузер такие запросы заблокирует.
+# 3001 разрешён вторым: порт 3000 на этой машине может быть занят другим
+# проектом, и тогда дашборд поднимается на 3001.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000", "http://127.0.0.1:3000",
+        "http://localhost:3001", "http://127.0.0.1:3001",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -55,6 +60,17 @@ class DecisionIn(BaseModel):
     item_id: str
     decision: str  # "approve" | "reject" | "request_review"
     analyst_comment: str | None = None
+
+
+class AnalyzeUrlIn(BaseModel):
+    url: str
+    # Возраст аккаунта/рост подписчиков НЕ доступны через yt-dlp (закрытые
+    # метрики платформы, нужен TikTok Research API / Instagram Graph API
+    # с одобренным доступом, см. pipeline/metadata.py) — поэтому остаются
+    # опциональными ручными полями "точнее, если знаешь", а не блокером.
+    account_age_days: float | None = None
+    follower_growth: float | None = None
+    referral_link_in_bio: bool = False
 
 
 def _read_queue() -> list[dict]:
@@ -192,6 +208,41 @@ async def analyze(
     return record
 
 
+@app.post("/analyze/url")
+def analyze_url(payload: AnalyzeUrlIn):
+    """Аналитик вставляет только URL — видео скачивается и caption/@handle
+    извлекаются автоматически через yt-dlp (pipeline/url_fetch.py), без
+    ручного ввода. Возраст аккаунта/рост подписчиков остаются опциональными
+    (платформы их не отдают анонимно) — по умолчанию берутся нейтральные
+    значения из pipeline/metadata.DEFAULTS."""
+    try:
+        fetched = url_fetch.fetch_video(payload.url, INCOMING_DIR)
+    except Exception as e:  # noqa: BLE001 — приватный/удалённый пост, неподдерживаемая ссылка и т.п.
+        return {"error": "fetch_failed", "detail": str(e)}
+
+    account_metadata = {}
+    if payload.account_age_days is not None:
+        account_metadata["account_age_days"] = payload.account_age_days
+    if payload.follower_growth is not None:
+        account_metadata["follower_growth"] = payload.follower_growth
+    account_metadata["referral_link_in_bio"] = payload.referral_link_in_bio
+
+    dossier = build_dossier(fetched["local_path"], account_metadata, caption=fetched["caption"])
+
+    item_id = f"url_{uuid.uuid4().hex[:8]}"
+    record = _dossier_to_queue_record(
+        dossier, item_id, source="url_fetch",
+        account_handle=fetched["account_handle"], platform=fetched["platform"],
+    )
+    record["source_url"] = payload.url
+
+    items = _read_queue()
+    items.append(record)
+    _write_queue(items)
+
+    return record
+
+
 def _run_live_analysis(video_path: str, session_id: str, account_handle: str | None, platform: str, chunk_seconds: int) -> None:
     """Выполняется в фоне (BackgroundTasks): режет видео на чанки и
     пишет в очередь результат по каждому чанку сразу, как он готов — клиент
@@ -237,5 +288,5 @@ async def analyze_live(
 def root():
     return {
         "service": "AI Media Watch",
-        "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze", "/analyze/live", "/network"],
+        "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze", "/analyze/url", "/analyze/live", "/network"],
     }

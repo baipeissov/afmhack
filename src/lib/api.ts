@@ -84,6 +84,30 @@ export async function analyzeVideo(formData: FormData): Promise<QueueRecord> {
   return res.json();
 }
 
+export interface AnalyzeUrlInput {
+  url: string;
+  accountAgeDays?: number;
+  followerGrowth?: number;
+  referralLinkInBio?: boolean;
+}
+
+/** Аналитик вставляет только ссылку — caption/@handle вытягиваются сами
+ * через yt-dlp на бэкенде (см. pipeline/url_fetch.py, POST /analyze/url). */
+export async function analyzeUrl(input: AnalyzeUrlInput): Promise<QueueRecord & { error?: string; detail?: string }> {
+  const res = await fetch(`${API_URL}/analyze/url`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      url: input.url,
+      account_age_days: input.accountAgeDays ?? null,
+      follower_growth: input.followerGrowth ?? null,
+      referral_link_in_bio: input.referralLinkInBio ?? false,
+    }),
+  });
+  if (!res.ok) throw new Error(`analyze/url failed: ${res.status}`);
+  return res.json();
+}
+
 export interface NetworkNode {
   id: string;
   platform: "tiktok" | "instagram";

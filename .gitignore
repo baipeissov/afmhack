@@ -35,3 +35,4 @@ frame_cache/
 .vscode/
 .claude/
 node_modules
+.playwright-mcp/
