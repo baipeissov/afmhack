@@ -9,7 +9,6 @@ const TABS = [
   { seg: "", key: "overview" },
   { seg: "agents", key: "warRoom" },
   { seg: "contradictions", key: "contradictions" },
-  { seg: "graph", key: "graph" },
   { seg: "timeline", key: "timeline" },
   { seg: "report", key: "report" },
 ] as const;

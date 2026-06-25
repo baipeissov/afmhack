@@ -101,7 +101,7 @@ export default async function CaseOverview({
               {inv.platform} · {inv.followers} · {t("joined")}
             </div>
             <Link
-              href={`/investigations/${inv.id}/graph`}
+              href="/network"
               className="inline-flex items-center gap-1.5 text-xs text-brand-400 hover:underline"
             >
               ⬡ {t("linkedEntities", { count: 6 })} →

@@ -4,7 +4,6 @@
     "detections": "Detections",
     "investigations": "Investigations",
     "entities": "Entities",
-    "graph": "Graph",
     "network": "Network",
     "analytics": "Analytics",
     "agents": "Agents",
@@ -27,7 +26,7 @@
     "region": "region {region}"
   },
   "howItWorks": {
-    "heading": "How SwarmShield works",
+    "heading": "How Qalqan works",
     "detect": {
       "title": "1 · Detect",
       "text": "AI scans TikTok & Instagram videos for scam, casino & pyramid signals."
@@ -92,7 +91,7 @@
   },
   "command": {
     "title": "Command Center",
-    "lead": "SwarmShield automatically finds fraudulent videos on social media and runs AI investigations against them. Here's everything happening across your organization right now.",
+    "lead": "Qalqan automatically finds fraudulent videos on social media and runs AI investigations against them. Here's everything happening across your organization right now.",
     "threatLevel": "Threat level: Elevated",
     "riskInflowTitle": "Risk inflow · last 72h",
     "riskInflowSub": "stacked by severity",
@@ -140,15 +139,9 @@
     "manipulationTechnique": "Manipulation technique",
     "addToReport": "Add to report"
   },
-  "graph": {
-    "heading": "The network behind the account",
-    "lead": "Every person, wallet and device linked to the suspect. Click any node for details.",
-    "networkView": "Network view",
-    "mapView": "Map view"
-  },
   "warRoom": {
     "explainerBold": "Three AI agents are questioning this account at the same time",
-    "explainer1": "— each pretends to be a different kind of investor. SwarmShield compares their answers live and",
+    "explainer1": "— each pretends to be a different kind of investor. Qalqan compares their answers live and",
     "explainer2": "flags the moment the suspect contradicts itself.",
     "resume": "Resume",
     "pause": "Pause",
@@ -167,9 +160,18 @@
     "toastTitle": "Contradiction caught — the suspect just lied",
     "toastDescription": "On \"{topic}\", different agents got opposite answers.",
     "agentMeta": {
-      "a_03": { "name": "The Skeptic", "role": "Pushes back, asks who guarantees the returns" },
-      "a_07": { "name": "The Eager Newbie", "role": "Plays naive to learn how payouts really work" },
-      "a_11": { "name": "The Due-Diligence", "role": "Asks for licences and legal proof" }
+      "a_03": {
+        "name": "The Skeptic",
+        "role": "Pushes back, asks who guarantees the returns"
+      },
+      "a_07": {
+        "name": "The Eager Newbie",
+        "role": "Plays naive to learn how payouts really work"
+      },
+      "a_11": {
+        "name": "The Due-Diligence",
+        "role": "Asks for licences and legal proof"
+      }
     }
   },
   "report": {
@@ -214,7 +216,6 @@
     "overview": "Overview",
     "warRoom": "War Room",
     "contradictions": "Contradictions",
-    "graph": "Graph",
     "timeline": "Timeline",
     "report": "Report"
   },
