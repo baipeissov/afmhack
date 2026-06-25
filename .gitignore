@@ -25,8 +25,21 @@ frame_cache/
 
 # next.js
 .next/
+
+# secrets / env (NEVER commit — contains OPENROUTER_API_KEY etc.)
+.env
 .env.local
 .env*.local
+
+# agent runtime artifacts
+data/engagement_log.jsonl
+data/audit_log.jsonl
+data/engagement/
+data/reports/
+data/incoming/
+data/citizen_reports.jsonl
+data/.*_seen.json
+evidence/
 
 # os / editor
 .DS_Store

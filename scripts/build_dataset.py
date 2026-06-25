@@ -247,6 +247,21 @@ def load_synthetic():
     return df[["text", "label", "source", "lang"]]
 
 
+def load_confirmed_cases():
+    """Layer 4 — подтверждённые аналитиком кейсы (цикл самообучения).
+    DatasetCuratorAgent дописывает сюда текстовые сигналы (транскрипт+OCR)
+    кейсов, которые аналитик подтвердил как мошеннические. Это реальные
+    RU/KZ примеры из продакшена — ценнейший сигнал, поэтому в OWN_SOURCES
+    (не каппится). См. agents/dataset/curator.py."""
+    path = DATA_DIR / "curated_labeled.csv"
+    if not path.exists():
+        warnings.warn(f"[skip] confirmed-cases file not found: {path}")
+        return None
+    df = pd.read_csv(path)
+    df["source"] = "confirmed_case"
+    return df[["text", "label", "source", "lang"]]
+
+
 # Классы 0 (clean) и 5 (hidden_engagement) получают на порядки больше строк
 # из Layer 1, чем остальные. Без ограничения сверху train.csv был бы на 95%
 # из них, и embedding-обучение Component A тратило бы время в основном на
@@ -262,7 +277,7 @@ def load_synthetic():
 # в train split. Поэтому ограничиваем именно внешний объём, а наш Layer 2/3
 # остаётся в полном объёме и составляет заметную долю класса.
 MAX_EXTERNAL_PER_LABEL = {0: 2500, 5: 250}
-OWN_SOURCES = {"seed_kz_ru", "synthetic_template"}
+OWN_SOURCES = {"seed_kz_ru", "synthetic_template", "confirmed_case"}
 
 LOADERS = [
     load_difraud,
@@ -272,6 +287,7 @@ LOADERS = [
     load_russian_inappropriate,
     load_seed,
     load_synthetic,
+    load_confirmed_cases,
 ]
 
 

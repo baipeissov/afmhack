@@ -42,6 +42,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Агентный слой (СУНКАР): discovery / специалисты / датасет / граф / следователь /
+# связной с АФМ. См. agents/routes.py.
+from agents.routes import router as agents_router  # noqa: E402
+
+app.include_router(agents_router)
+
+
+@app.on_event("startup")
+async def _maybe_start_orchestrator():
+    """Фоновые циклы скрейпинга/анализа запускаем только по флагу окружения,
+    чтобы dev-запуск API не начинал автоматически качать видео."""
+    import os
+
+    if os.getenv("SUNKAR_ORCHESTRATOR", "false").lower() == "true":
+        import asyncio
+
+        from agents.orchestrator import orchestrator
+        asyncio.create_task(orchestrator.run())
+
 
 class ReportIn(BaseModel):
     url: str | None = None
@@ -142,7 +161,18 @@ def record_decision(decision: DecisionIn):
             item["status"] = decision.decision
             item["analyst_comment"] = decision.analyst_comment
     _write_queue(items)
-    return {"status": "recorded"}
+
+    # Цикл самообучения: подтверждённый кейс пополняет обучающий датасет
+    # (только approve, только подтверждённые человеком данные).
+    curated = None
+    if decision.decision == "approve":
+        try:
+            from agents.dataset.curator import DatasetCuratorAgent
+
+            curated = DatasetCuratorAgent().curate_case(decision.item_id)
+        except Exception as e:  # noqa: BLE001
+            curated = {"ok": False, "error": str(e)}
+    return {"status": "recorded", "curated": curated}
 
 
 @app.post("/analyze")

@@ -35,4 +35,12 @@ uvicorn[standard]
 python-multipart
 pydantic
 
+# --- agent layer (СУНКАР) ---
+httpx                 # LLM via OpenRouter (agents/llm.py)
+python-dotenv         # подхват .env (OPENROUTER_API_KEY)
+playwright            # browser-скрейпинг TikTok/Instagram (agents/discovery)
+beautifulsoup4        # probe_agent (разбор лендинга)
+python-docx           # официальный рапорт DOCX (report_generator)
+requests              # probe_agent
+
 # --- frontend (served as static files by FastAPI, no separate build needed) ---
