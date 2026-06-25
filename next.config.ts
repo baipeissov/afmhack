@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // Separate build dir lets a second `next dev` instance (e.g. port 3001)
+  // run alongside the main one without fighting over the shared .next lock.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
 };
 
 export default withNextIntl(nextConfig);

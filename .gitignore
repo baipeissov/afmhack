@@ -25,6 +25,7 @@ frame_cache/
 
 # next.js
 .next/
+.next-*/
 .env.local
 .env*.local
 

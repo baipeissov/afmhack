@@ -27,7 +27,7 @@
     "region": "region {region}"
   },
   "howItWorks": {
-    "heading": "How SwarmShield works",
+    "heading": "How Qalqan works",
     "detect": {
       "title": "1 · Detect",
       "text": "AI scans TikTok & Instagram videos for scam, casino & pyramid signals."
@@ -92,7 +92,7 @@
   },
   "command": {
     "title": "Command Center",
-    "lead": "SwarmShield automatically finds fraudulent videos on social media and runs AI investigations against them. Here's everything happening across your organization right now.",
+    "lead": "Qalqan automatically finds fraudulent videos on social media and runs AI investigations against them. Here's everything happening across your organization right now.",
     "threatLevel": "Threat level: Elevated",
     "riskInflowTitle": "Risk inflow · last 72h",
     "riskInflowSub": "stacked by severity",
@@ -148,7 +148,7 @@
   },
   "warRoom": {
     "explainerBold": "Three AI agents are questioning this account at the same time",
-    "explainer1": "— each pretends to be a different kind of investor. SwarmShield compares their answers live and",
+    "explainer1": "— each pretends to be a different kind of investor. Qalqan compares their answers live and",
     "explainer2": "flags the moment the suspect contradicts itself.",
     "resume": "Resume",
     "pause": "Pause",

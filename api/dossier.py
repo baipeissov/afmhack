@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from data.label_schema import LABELS_RU  # noqa: E402
 from models import fusion_predict, predict_text  # noqa: E402
-from pipeline import audio, entity_extractor, metadata, ocr, visual  # noqa: E402
+from pipeline import audio, entity_extractor, llm_explainer, metadata, ocr, visual  # noqa: E402
 
 try:
     from pipeline.kaspi_normalizer import find_kaspi_numbers
@@ -113,6 +113,16 @@ def build_dossier(video_path: str, account_metadata: dict | None = None, caption
             f"growth_risk={meta_features.get('follower_growth_risk', 0):.2f})"
         )
 
+    # LLM-объяснение по таймкодам: берём топ-3 evidence-сегмента по уверенности
+    # (аудио и OCR вместе) и просим маленькую локальную LLM объяснить фразу
+    # человеческим языком — поверх уже готовых шаблонных explanations выше.
+    # Если Ollama не запущен, llm_explainer тихо вернёт [] — не блокирует досье.
+    llm_evidence = [{**e, "class_ru": LABELS_RU[_class_id(e["class"])]} for e in transcript_evidence] + [
+        {**e, "class_ru": LABELS_RU[_class_id(e["class"])]} for e in ocr_evidence
+    ]
+    llm_evidence.sort(key=lambda e: -e["prob"])
+    llm_explanations = llm_explainer.explain_evidence(llm_evidence, max_items=3)
+
     recommendation = (
         "Направить аналитику на приоритетную проверку (priority 1)"
         if risk["risk_score"] >= 0.7
@@ -129,6 +139,7 @@ def build_dossier(video_path: str, account_metadata: dict | None = None, caption
         "top_class_ru": LABELS_RU.get(_class_id(top_text_class), top_text_class),
         "contributions": risk["contributions"],
         "explanations": explanations,
+        "llm_explanations": llm_explanations,
         "recommendation": recommendation,
         "entities": entities,
         "raw": {

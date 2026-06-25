@@ -13,7 +13,7 @@ export function StatusStrip() {
       </span>
       <span>{t("itemsPerHour", { count: 312 })}</span>
       <span>{t("region", { region: "EU-W" })}</span>
-      <span className="ml-auto text-text-secondary">v0.9.2-rc · SwarmShield AI</span>
+      <span className="ml-auto text-text-secondary">v0.9.2-rc · Qalqan AI</span>
     </footer>
   );
 }

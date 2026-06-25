@@ -1,14 +1,14 @@
 {
   "clean": {
-    "precision": 0.9402985074626866,
-    "recall": 0.875,
-    "f1-score": 0.9064748201438849,
-    "support": 504.0
+    "precision": 0.9547244094488189,
+    "recall": 0.9133709981167608,
+    "f1-score": 0.933589990375361,
+    "support": 531.0
   },
   "casino_betting": {
-    "precision": 0.9803921568627451,
-    "recall": 0.9803921568627451,
-    "f1-score": 0.9803921568627451,
+    "precision": 0.9622641509433962,
+    "recall": 1.0,
+    "f1-score": 0.9807692307692307,
     "support": 51.0
   },
   "pyramid_investment": {
@@ -18,9 +18,9 @@
     "support": 159.0
   },
   "referral_network": {
-    "precision": 0.8983050847457628,
-    "recall": 0.9636363636363636,
-    "f1-score": 0.9298245614035088,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
     "support": 55.0
   },
   "urgency_pressure": {
@@ -30,22 +30,22 @@
     "support": 21.0
   },
   "hidden_engagement": {
-    "precision": 0.9109792284866469,
-    "recall": 0.9002932551319648,
-    "f1-score": 0.9056047197640118,
-    "support": 341.0
+    "precision": 0.8961038961038961,
+    "recall": 0.7582417582417582,
+    "f1-score": 0.8214285714285714,
+    "support": 91.0
   },
-  "accuracy": 0.9089301503094607,
+  "accuracy": 0.9218061674008811,
   "macro avg": {
-    "precision": 0.9223497814830078,
-    "recall": 0.950075641850462,
-    "f1-score": 0.9343581582320469,
-    "support": 1131.0
+    "precision": 0.9362026946393862,
+    "recall": 0.9421241386383695,
+    "f1-score": 0.936606747298549,
+    "support": 908.0
   },
   "weighted avg": {
-    "precision": 0.9131890490179048,
-    "recall": 0.9089301503094607,
-    "f1-score": 0.9092373541758813,
-    "support": 1131.0
+    "precision": 0.9266908125154002,
+    "recall": 0.9218061674008811,
+    "f1-score": 0.9218481206632491,
+    "support": 908.0
   }
 }

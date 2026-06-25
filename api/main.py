@@ -18,12 +18,13 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, Form, UploadFile
+from fastapi import BackgroundTasks, FastAPI, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from api.dossier import build_dossier  # noqa: E402
+from pipeline import live_stream  # noqa: E402
 from pipeline.network_builder import build_network  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +91,7 @@ def _dossier_to_queue_record(dossier: dict, item_id: str, source: str, account_h
         "top_class_ru": dossier["top_class_ru"],
         "contributions": dossier["contributions"],
         "explanations": dossier["explanations"],
+        "llm_explanations": dossier.get("llm_explanations", []),
         "recommendation": dossier["recommendation"],
         "entities": dossier.get("entities", {}),
         "modalities": {
@@ -190,6 +192,50 @@ async def analyze(
     return record
 
 
+def _run_live_analysis(video_path: str, session_id: str, account_handle: str | None, platform: str, chunk_seconds: int) -> None:
+    """Выполняется в фоне (BackgroundTasks): режет видео на чанки и
+    пишет в очередь результат по каждому чанку сразу, как он готов — клиент
+    видит частичные результаты в /queue по мере анализа, не дожидаясь
+    последнего чанка."""
+    for result in live_stream.analyze_chunks(video_path):
+        item_id = f"{session_id}_chunk{result['chunk_index']:03d}"
+        record = _dossier_to_queue_record(
+            result["dossier"], item_id, source="live_stream", account_handle=account_handle, platform=platform
+        )
+        record["stream_offset_seconds"] = result["stream_offset_seconds"]
+        record["live_session_id"] = session_id
+
+        items = _read_queue()
+        items.append(record)
+        _write_queue(items)
+
+
+@app.post("/analyze/live")
+async def analyze_live(
+    background_tasks: BackgroundTasks,
+    file: UploadFile,
+    account_handle: str | None = Form(None),
+    platform: str = Form("TikTok"),
+    chunk_seconds: int = Form(live_stream.DEFAULT_CHUNK_SECONDS),
+):
+    """Имитация прямого эфира: видео режется на чанки по chunk_seconds и
+    анализируется по мере готовности — каждый чанк появляется в /queue
+    отдельной записью с live_session_id, не дожидаясь конца всего видео.
+    (Реальный живой HLS-захват — pipeline/live_stream.capture_live_chunks —
+    не используется здесь намеренно, см. docstring модуля.)"""
+    INCOMING_DIR.mkdir(parents=True, exist_ok=True)
+    dest = INCOMING_DIR / file.filename
+    with open(dest, "wb") as f:
+        f.write(await file.read())
+
+    session_id = f"live_{uuid.uuid4().hex[:8]}"
+    background_tasks.add_task(_run_live_analysis, str(dest), session_id, account_handle, platform, chunk_seconds)
+    return {"status": "started", "live_session_id": session_id}
+
+
 @app.get("/")
 def root():
-    return {"service": "AI Media Watch", "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze", "/network"]}
+    return {
+        "service": "AI Media Watch",
+        "endpoints": ["/report", "/queue", "/queue/{id}", "/queue/decision", "/analyze", "/analyze/live", "/network"],
+    }

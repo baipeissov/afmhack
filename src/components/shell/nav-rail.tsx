@@ -8,7 +8,6 @@ import {
   Radar,
   Crosshair,
   Hexagon,
-  Share2,
   Network,
   BarChart3,
   Bot,
@@ -26,7 +25,6 @@ const NAV = [
   { href: "/detections", key: "detections", icon: Radar },
   { href: "/investigations", key: "investigations", icon: Crosshair },
   { href: "/entities", key: "entities", icon: Hexagon },
-  { href: "/investigations/CASE-2041/graph", key: "graph", icon: Share2 },
   { href: "/network", key: "network", icon: Network },
   { href: "/analytics", key: "analytics", icon: BarChart3 },
   { href: "/agents", key: "agents", icon: Bot },
@@ -46,7 +44,7 @@ export function NavRail() {
       >
         <ShieldHalf className="size-5 text-brand-500" />
         <span className="text-sm font-semibold tracking-tight text-text-primary">
-          SwarmShield<span className="text-brand-500"> AI</span>
+          Qalqan<span className="text-brand-500"> AI</span>
         </span>
       </Link>
 
